@@ -3,11 +3,11 @@
 require "increase/resource"
 
 module Increase
-  class Accounts < Resource
+  class Cards < Resource
     endpoint :create
     endpoint :list
+    endpoint :details, as: :action, with: :get
     endpoint :update
     endpoint :retrieve
-    endpoint :close, as: :action, with: :post
   end
 end

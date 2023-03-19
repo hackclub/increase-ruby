@@ -29,8 +29,11 @@ module Increase
       name.split("::").last.gsub(/[A-Z]/, ' \0').strip
     end
 
-    def self.endpoint(method, as: nil)
-      return endpoint_action(method) if as == :action
+    def self.endpoint(method, as: nil, with: nil)
+      if as == :action
+        raise Error, "`with` must be a valid HTTP method" unless %i[get post put patch delete].include?(with)
+        return endpoint_action(method, with)
+      end
       raise Error, "as must be :action" if as
 
       define_singleton_method(method) do |*args, &block|
@@ -42,13 +45,13 @@ module Increase
 
     private_class_method :endpoint
 
-    def self.endpoint_action(method)
+    def self.endpoint_action(method, http_method)
       define_singleton_method(method) do |*args, &block|
-        new.send(:action, method, *args, &block)
+        new.send(:action, method, http_method, *args, &block)
       end
 
       define_method(method) do |*args, &block|
-        new.send(:action, method, *args, &block)
+        new.send(:action, method, http_method, *args, &block)
       end
     end
 
@@ -109,10 +112,10 @@ module Increase
 
     # Such as for "/accounts/{account_id}/close"
     # "close" is the action.
-    def action(action, id, params = nil, headers = nil)
+    def action(action, http_method, id, params = nil, headers = nil)
       raise Error, "id must be a string" unless id.is_a?(String)
       path = "#{self.class.resource_url}/#{id}/#{action}"
-      request(:post, path, params, headers)
+      request(http_method, path, params, headers)
     end
 
     def request(method, path, params = nil, headers = nil)
