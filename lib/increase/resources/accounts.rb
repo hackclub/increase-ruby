@@ -12,7 +12,6 @@ module Increase
       def list(params = {})
         client.get(resource_url, params)
       end
-
     end
   end
 end

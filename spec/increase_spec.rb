@@ -18,5 +18,4 @@ RSpec.describe Increase do
     expect(Increase).to respond_to(:api_key)
     expect(Increase).to respond_to(:api_key=)
   end
-
 end

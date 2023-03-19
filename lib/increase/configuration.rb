@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Increase
-
   class Configuration
     attr_reader :base_url
     attr_accessor :api_key
@@ -21,7 +20,7 @@ module Increase
     def configure(config = nil)
       if config.is_a?(Hash)
         config.each do |key, value|
-          self.public_send("#{key}=", value)
+          public_send("#{key}=", value)
         end
       end
 
@@ -35,7 +34,7 @@ module Increase
       url = SANDBOX_URL if [:sandbox, :development].include?(url)
 
       # Validate url
-      unless url =~ URI::regexp(%w[http https])
+      unless url&.match?(URI::DEFAULT_PARSER.make_regexp(%w[http https]))
         raise ArgumentError, "Invalid url: #{url}"
       end
 

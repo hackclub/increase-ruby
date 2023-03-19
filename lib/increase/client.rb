@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'increase/configuration'
+require "increase/configuration"
 
 require "faraday"
 require "faraday/follow_redirects"
@@ -27,7 +27,7 @@ module Increase
       Faraday.new(
         url: @configuration.base_url,
         headers: {
-          Authorization: "Bearer #{@configuration.api_key}",
+          Authorization: "Bearer #{@configuration.api_key}"
         }
       ) do |f|
         f.request :json
@@ -43,7 +43,5 @@ module Increase
         f.adapter Faraday.default_adapter
       end
     end
-
   end
-
 end

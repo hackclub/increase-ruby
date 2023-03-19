@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-require 'pry'
+require "pry"
 
 module Increase
-
   class Error < StandardError; end
 
   class ApiError < Error
-
     attr_reader :response
 
     attr_reader :detail
@@ -32,7 +30,7 @@ module Increase
         klass = ERROR_TYPES[type]
 
         # Fallback in case of really bad 5xx error
-        klass ||= InternalServerError if (500..599).include?(response.status)
+        klass ||= InternalServerError if (500..599).cover?(response.status)
 
         # Handle case of an unknown error
         klass ||= ApiError
@@ -72,19 +70,18 @@ module Increase
   class RateLimitedError < ApiError; end
 
   ERROR_TYPES = {
-    'api_method_not_found_error' => ApiMethodNotFoundError,
-    'environment_mismatch_error' => EnvironmentMismatchError,
-    'idempotency_conflict_error' => IdempotencyConflictError,
-    'idempotency_unprocessable_error' => IdempotencyUnprocessableError,
-    'insufficient_permissions_error' => InsufficientPermissionsError,
-    'internal_server_error' => InternalServerError,
-    'invalid_api_key_error' => InvalidApiKeyError,
-    'invalid_operation_error' => InvalidOperationError,
-    'invalid_parameters_error' => InvalidParametersError,
-    'malformed_request_error' => MalformedRequestError,
-    'object_not_found_error' => ObjectNotFoundError,
-    'private_feature_error' => PrivateFeatureError,
-    'rate_limited_error' => RateLimitedError,
+    "api_method_not_found_error" => ApiMethodNotFoundError,
+    "environment_mismatch_error" => EnvironmentMismatchError,
+    "idempotency_conflict_error" => IdempotencyConflictError,
+    "idempotency_unprocessable_error" => IdempotencyUnprocessableError,
+    "insufficient_permissions_error" => InsufficientPermissionsError,
+    "internal_server_error" => InternalServerError,
+    "invalid_api_key_error" => InvalidApiKeyError,
+    "invalid_operation_error" => InvalidOperationError,
+    "invalid_parameters_error" => InvalidParametersError,
+    "malformed_request_error" => MalformedRequestError,
+    "object_not_found_error" => ObjectNotFoundError,
+    "private_feature_error" => PrivateFeatureError,
+    "rate_limited_error" => RateLimitedError
   }
 end
-

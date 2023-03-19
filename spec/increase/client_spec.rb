@@ -36,15 +36,13 @@ RSpec.describe Increase::Client do
 
     context "and the API returns a 400" do
       before do
-        stub_request(:get, "https://example.com").
-          to_return(status: 400, body: "", headers: {})
+        stub_request(:get, "https://example.com")
+          .to_return(status: 400, body: "", headers: {})
       end
 
-      it 'raises an error' do
+      it "raises an error" do
         expect { @client.connection.get("https://example.com") }.to raise_error(Increase::ApiError)
       end
-
     end
-
   end
 end

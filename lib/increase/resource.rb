@@ -1,7 +1,6 @@
 module Increase
   class Resource
     class << self
-
       def get(path, params = {})
         response = connection.get(path, params)
         response.body
@@ -31,9 +30,8 @@ module Increase
           raise NotImplementedError, "Resource is an abstract class. You should perform actions on its subclasses (Accounts, Transactions, Card, etc.)"
         end
 
-        self.name.split('::').last
+        name.split("::").last
       end
     end
-
   end
 end

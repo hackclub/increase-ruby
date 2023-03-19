@@ -46,5 +46,4 @@ RSpec.describe Increase::Configuration do
       expect(@configuration.base_url).to eq(Increase::SANDBOX_URL)
     end
   end
-
 end

@@ -1,4 +1,4 @@
-require 'faraday'
+require "faraday"
 
 module FaradayMiddleware
   class RaiseIncreaseApiError < Faraday::Middleware
@@ -7,6 +7,5 @@ module FaradayMiddleware
 
       raise Increase::ApiError.from_response(env)
     end
-
   end
 end
