@@ -5,7 +5,18 @@ RSpec.describe Increase do
     expect(Increase::VERSION).not_to be nil
   end
 
-  # it "does something useful" do
-  #   expect(false).to eq(true)
-  # end
+  it "has a default client" do
+    expect(Increase).to respond_to(:default_client)
+  end
+
+  it "has an increase_url" do
+    expect(Increase).to respond_to(:increase_url)
+    expect(Increase).to respond_to(:increase_url=)
+  end
+
+  it "has an increase_api_key" do
+    expect(Increase).to respond_to(:increase_api_key)
+    expect(Increase).to respond_to(:increase_api_key=)
+  end
+
 end
