@@ -18,7 +18,7 @@ module Increase
     end
 
     def self.resource_url
-      "/#{resource_name.downcase}"
+      "/#{resource_name.downcase.tr(" ", "_")}"
     end
 
     def self.resource_name
@@ -26,15 +26,15 @@ module Increase
         raise NotImplementedError, "Resource is an abstract class. You should perform actions on its subclasses (Accounts, Transactions, Card, etc.)"
       end
 
-      name.split("::").last
+      name.split("::").last.gsub(/[A-Z]/, ' \0').strip
     end
 
     def self.endpoint(method, as: nil)
       return endpoint_action(method) if as == :action
       raise Error, "as must be :action" if as
 
-      define_singleton_method(method) do |*args|
-        new.send(method, *args)
+      define_singleton_method(method) do |*args, &block|
+        new.send(method, *args, &block)
       end
 
       public method
@@ -43,12 +43,12 @@ module Increase
     private_class_method :endpoint
 
     def self.endpoint_action(method)
-      define_singleton_method(method) do |*args|
-        new.send(:action, method, *args)
+      define_singleton_method(method) do |*args, &block|
+        new.send(:action, method, *args, &block)
       end
 
-      define_method(method) do |*args|
-        new.send(:action, method, *args)
+      define_method(method) do |*args, &block|
+        new.send(:action, method, *args, &block)
       end
     end
 
@@ -60,8 +60,39 @@ module Increase
       request(:post, self.class.resource_url, params, headers)
     end
 
-    def list(params = nil, headers = nil)
-      request(:get, self.class.resource_url, params, headers)
+    def list(params = nil, headers = nil, &block)
+      results = []
+      count = 0
+      limit = params&.[](:limit) || params&.[]("limit")
+      if limit == :all || limit&.>(100)
+        params&.delete(:limit)
+        params&.delete("limit")
+      end
+
+      loop do
+        res = request(:get, self.class.resource_url, params, headers)
+        data = res["data"]
+        count += data.size
+        if ![nil, :all].include?(limit) && count >= limit
+          data = data[0..(limit - (count - data.size) - 1)]
+        end
+
+        if block
+          block.call(data)
+        else
+          results += data
+        end
+
+        if limit.nil? || (limit != :all && count >= limit) || res["next_cursor"].nil?
+          if block
+            break
+          else
+            return results
+          end
+        end
+
+        params = (params || {}).merge({cursor: res["next_cursor"]})
+      end
     end
 
     def update(id, params = nil, headers = nil)
