@@ -1,6 +1,21 @@
 # frozen_string_literal: true
 
 RSpec.describe Increase::Client do
+  context "when instantiated with params" do
+    it "uses the configuration passed in" do
+      @configuration = Increase::Configuration.new(api_key: "bare-metal banking")
+      @client = Increase::Client.new(@configuration)
+
+      expect(@client.configuration).to eq(@configuration)
+    end
+
+    it "uses the hash config passed in" do
+      @client = Increase::Client.new(api_key: "banking")
+
+      expect(@client.api_key).to eq("banking")
+    end
+  end
+
   before do
     @client = Increase::Client.new
   end

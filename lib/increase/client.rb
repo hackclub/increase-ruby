@@ -15,16 +15,12 @@ module Increase
     attr_accessor :configuration
     def_delegators :configuration, :configure
 
-    def_delegators :default_client, :base_url, :base_url=
-    def_delegators :default_client, :api_key, :api_key=
-    def_delegators :default_client, :raise_api_errors, :raise_api_errors=
+    def_delegators :configuration, :base_url, :base_url=
+    def_delegators :configuration, :api_key, :api_key=
+    def_delegators :configuration, :raise_api_errors, :raise_api_errors=
 
     def initialize(config = nil)
-      @configuration = if config.is_a?(Configuration)
-        config
-      else
-        Configuration.new(config)
-      end
+      @configuration = config.is_a?(Configuration) ? config : Configuration.new(config)
     end
 
     def connection

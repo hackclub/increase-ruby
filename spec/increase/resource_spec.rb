@@ -17,9 +17,9 @@ RSpec.describe Increase::Resource do
 
     it "uses the client passed in" do
       @client = Increase::Client.new(api_key: "test")
-      @account = Increase::Accounts.with_config(@client)
+      @resource = Increase::Accounts.with_config(@client)
 
-      expect(@account.instance_variable_get(:@client)).to eq(@client)
+      expect(@resource.instance_variable_get(:@client)).to eq(@client)
     end
   end
 
