@@ -1,2 +1,4 @@
-require "increase/resources/accounts"
-require "increase/resources/account_numbers"
+# Require all files in the lib/increase/resources directory
+Dir[File.expand_path("resources/*.rb", __dir__)].each do |file|
+  require file
+end
