@@ -7,8 +7,12 @@ module Increase
     attr_accessor :raise_api_errors
     # TODO: support Faraday config
 
-    def initialize
-      reset
+    def initialize(config = nil)
+      if config.nil?
+        reset
+      else
+        configure(config)
+      end
     end
 
     def reset
@@ -20,6 +24,9 @@ module Increase
     def configure(config = nil)
       if config.is_a?(Hash)
         config.each do |key, value|
+          unless respond_to?("#{key}=")
+            raise Error, "Invalid configuration key: #{key}"
+          end
           public_send("#{key}=", value)
         end
       end
@@ -27,6 +34,8 @@ module Increase
       if block_given?
         yield self
       end
+
+      self
     end
 
     def base_url=(url)

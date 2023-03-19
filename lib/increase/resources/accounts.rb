@@ -4,14 +4,10 @@ require "increase/resource"
 
 module Increase
   class Accounts < Resource
-    class << self
-      def create(params)
-        client.post(resource_url, params)
-      end
-
-      def list(params = {})
-        client.get(resource_url, params)
-      end
-    end
+    endpoint :create
+    endpoint :list
+    endpoint :update
+    endpoint :retrieve
+    endpoint :close, as: :action
   end
 end
