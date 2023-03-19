@@ -15,8 +15,8 @@ module Increase
     attr_accessor :configuration
     def_delegators :configuration, :configure
 
-    def_delegators :default_client, :increase_url, :increase_url=
-    def_delegators :default_client, :increase_api_key, :increase_api_key=
+    def_delegators :default_client, :base_url, :base_url=
+    def_delegators :default_client, :api_key, :api_key=
     def_delegators :default_client, :raise_api_errors, :raise_api_errors=
 
     def initialize
@@ -25,9 +25,9 @@ module Increase
 
     def connection
       Faraday.new(
-        url: @configuration.increase_url,
+        url: @configuration.base_url,
         headers: {
-          Authorization: "Bearer #{@configuration.increase_api_key}",
+          Authorization: "Bearer #{@configuration.api_key}",
         }
       ) do |f|
         f.request :json

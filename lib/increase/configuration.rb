@@ -3,8 +3,8 @@
 module Increase
 
   class Configuration
-    attr_reader :increase_url
-    attr_accessor :increase_api_key
+    attr_reader :base_url
+    attr_accessor :api_key
     attr_accessor :raise_api_errors
     # TODO: support Faraday config
 
@@ -13,8 +13,8 @@ module Increase
     end
 
     def reset
-      @increase_url = Increase::PRODUCTION_URL
-      @increase_api_key = nil
+      @base_url = Increase::PRODUCTION_URL
+      @api_key = nil
       @raise_api_errors = true
     end
 
@@ -30,7 +30,7 @@ module Increase
       end
     end
 
-    def increase_url=(url)
+    def base_url=(url)
       url = PRODUCTION_URL if url == :production
       url = SANDBOX_URL if [:sandbox, :development].include?(url)
 
@@ -39,7 +39,7 @@ module Increase
         raise ArgumentError, "Invalid url: #{url}"
       end
 
-      @increase_url = url
+      @base_url = url
     end
   end
 end

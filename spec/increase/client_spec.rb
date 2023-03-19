@@ -17,14 +17,14 @@ RSpec.describe Increase::Client do
     expect(@client.connection).to be_a(Faraday::Connection)
   end
 
-  it "has an increase_url" do
-    expect(@client).to respond_to(:increase_url)
-    expect(@client).to respond_to(:increase_url=)
+  it "has an base_url" do
+    expect(@client).to respond_to(:base_url)
+    expect(@client).to respond_to(:base_url=)
   end
 
-  it "has an increase_api_key" do
-    expect(@client).to respond_to(:increase_api_key)
-    expect(@client).to respond_to(:increase_api_key=)
+  it "has an api_key" do
+    expect(@client).to respond_to(:api_key)
+    expect(@client).to respond_to(:api_key=)
   end
 
   context "when configured to raise API errors" do

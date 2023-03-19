@@ -18,8 +18,8 @@ module Increase
     attr_accessor :default_client
     def_delegators :default_client, :configure
 
-    def_delegators :default_client, :increase_url, :increase_url=
-    def_delegators :default_client, :increase_api_key, :increase_api_key=
+    def_delegators :default_client, :base_url, :base_url=
+    def_delegators :default_client, :api_key, :api_key=
     def_delegators :default_client, :raise_api_errors, :raise_api_errors=
 
   end
