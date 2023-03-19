@@ -17,7 +17,7 @@ module Increase
 
     def reset
       @base_url = Increase::PRODUCTION_URL
-      @api_key = nil
+      @api_key = nil || ENV["INCREASE_API_KEY"]
       @raise_api_errors = true
     end
 
