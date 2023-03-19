@@ -19,7 +19,7 @@ module Increase
     def_delegators :default_client, :api_key, :api_key=
     def_delegators :default_client, :raise_api_errors, :raise_api_errors=
 
-   def initialize(config = nil)
+    def initialize(config = nil)
       @configuration = if config.is_a?(Configuration)
         config
       else

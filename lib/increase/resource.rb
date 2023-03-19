@@ -3,6 +3,9 @@ require "increase/response_hash"
 module Increase
   class Resource
     def initialize(client: nil)
+      if instance_of?(Resource)
+        raise NotImplementedError, "Resource is an abstract class. You should perform actions on its subclasses (Accounts, Transactions, Card, etc.)"
+      end
       @client = client || Increase.default_client
     end
 
@@ -83,7 +86,7 @@ module Increase
 
     def request(method, path, params = nil, headers = nil)
       if method == :post
-        headers = { "Content-Type" => "application/json" }.merge!(headers || {})
+        headers = {"Content-Type" => "application/json"}.merge!(headers || {})
       end
 
       response = @client.connection.send(method, path, params, headers)
