@@ -204,11 +204,11 @@ card = Increase::Cards.create(
 # => {"id"=>"card_1234abcd", "type"=>"card", ... }
 
 idempotent_replayed = card.response.headers['Idempotent-Replayed']
-# => "false"
+# => nil
 ```
 
 Reusing the key in subsequent requests will return the same response code and body as the original request along with an
-additional HTTP header (Idempotent-Replayed: true). This applies to both success and error responses. In situations
+additional HTTP header (`Idempotent-Replayed: true`). This applies to both success and error responses. In situations
 where your request results in a validation error, you'll need to update your request and retry with a new idempotency
 key.
 
