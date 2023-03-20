@@ -38,38 +38,40 @@ module Increase
       raise Error, "Invalid `to`. Max of 2 elements allowed" if to.size > 2
       raise Error, "Only one `to` allowed when not `with` an `id`" if to.size > 1 && !with.include?(:id)
 
-      if with.include?(:id)
-        # Method signature with a required `id` param
-        method = ->(id, params = nil, headers = nil, &block) do
-          url = self.class.resource_url
-          if to.size == 2
-            url += "/#{to[0]}/#{id}/#{to[1]}"
-          elsif to.size == 1
-            # Default to id first
-            url += "/#{id}/#{to[0]}"
-          else
-            url += "/#{id}"
-          end
+      method =
+        if with.include?(:id)
+          # Method signature with a required `id` param
+          ->(id, params = nil, headers = nil, &block) do
+            url = self.class.resource_url
+            url +=
+              if to.size == 2
+                "/#{to[0]}/#{id}/#{to[1]}"
+              elsif to.size == 1
+                # Default to id first
+                "/#{id}/#{to[0]}"
+              else
+                "/#{id}"
+              end
 
-          if with.include?(:pagination)
-            paginated_request(http_method, url, params, headers, &block)
-          else
-            request(http_method, url, params, headers, &block)
+            if with.include?(:pagination)
+              paginated_request(http_method, url, params, headers, &block)
+            else
+              request(http_method, url, params, headers, &block)
+            end
+          end
+        else
+          # Method signature without a required `id` param
+          ->(params = nil, headers = nil, &block) do
+            url = self.class.resource_url
+            url += "/#{to[0]}" if to.size == 1
+
+            if with.include?(:pagination)
+              paginated_request(http_method, url, params, headers, &block)
+            else
+              request(http_method, url, params, headers, &block)
+            end
           end
         end
-      else
-        # Method signature without a required `id` param
-        method = ->(params = nil, headers = nil, &block) do
-          url = self.class.resource_url
-          url += "/#{to[0]}" if to.size == 1
-
-          if with.include?(:pagination)
-            paginated_request(http_method, url, params, headers, &block)
-          else
-            request(http_method, url, params, headers, &block)
-          end
-        end
-      end
 
       # Define instance method
       define_method(name, &method)
@@ -188,7 +190,7 @@ module Increase
       end
 
       if method == :post
-        headers = { "Content-Type" => "application/json" }.merge!(headers || {})
+        headers = {"Content-Type" => "application/json"}.merge!(headers || {})
       end
 
       response = @client.connection.send(method, path, params, headers)
@@ -235,7 +237,7 @@ module Increase
           end
         end
 
-        params = (params || {}).merge({ cursor: res["next_cursor"] })
+        params = (params || {}).merge({cursor: res["next_cursor"]})
       end
     end
   end
