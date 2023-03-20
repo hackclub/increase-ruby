@@ -46,11 +46,11 @@ Increase::AchTransfers.create(
 By default, the client will use the global API key and configurations. However, you can define a custom client to be
 used for per-request configuration.
 
-For example, you may want to have access to production and sandbox data at the same.
+For example, you may want access to production and sandbox data at the same time.
 
 ```ruby
 sandbox = Increase::Client.new(
-  api_key: 'time_is_money',
+  api_key: 'playing_it_safe',
   base_url: 'https://sandbox.increase.com'
 )
 
@@ -61,6 +61,13 @@ Increase::Transactions.with_config(sandbox).list
 # This request will still use the global configurations (where the API key is a production key)
 Increase::Transactions.list
 # => [{some production transactions here}, {transaction}, {transaction}]
+```
+
+Alternatively, directly passing as hash to `with_config` works too!
+
+```ruby
+Increase::Transactions.with_config(api_key: 'time_is_money', base_url: :sandbox).list
+# => [{some sandbox transactions here}, {transaction}, {transaction}]
 ```
 
 See the [Configuration](#configuration) section for more information on the available configurations.
