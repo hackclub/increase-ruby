@@ -49,7 +49,6 @@ module Increase
 
       def self.compute_signature(timestamp:, payload:, secret:)
         signed_payload = timestamp.to_s + "." + payload.to_s
-        puts "signed_payload: #{signed_payload}"
         OpenSSL::HMAC.hexdigest("SHA256", secret, signed_payload)
       end
     end
