@@ -98,7 +98,7 @@ rescue Increase::ApiError => e
   puts e.detail # "No resource of type transaction was found with ID transaction_1234abcd."
   puts e.status # 404
 
-  puts e.response # This contains the full response from the API, including headers! (its a Faraday::Env object)
+  puts e.response # This contains the full response from the API, including headers! (its a Faraday::Response object)
 
   puts e.class # Increase::ObjectNotFoundError (it's a subclass of Increase::ApiError!)
 end
