@@ -1,6 +1,7 @@
 # Increase
 
-A Ruby API client for [Increase](https://increase.com/), a platform for Bare-Metal Banking APIs!
+A Ruby API client for [Increase](https://increase.com/), a platform for
+Bare-Metal Banking APIs!
 
 ## Installation
 
@@ -10,7 +11,8 @@ Install the gem and add to the application's Gemfile by executing:
 $ bundle add increase
 ```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+If bundler is not being used to manage dependencies, install the gem by
+executing:
 
 ```sh
 $ gem install increase
@@ -43,10 +45,11 @@ Increase::AchTransfers.create(
 
 ### Per-request Configuration
 
-By default, the client will use the global API key and configurations. However, you can define a custom client to be
-used for per-request configuration.
+By default, the client will use the global API key and configurations. However,
+you can define a custom client to be used for per-request configuration.
 
-For example, you may want access to production and sandbox data at the same time.
+For example, you may want access to production and sandbox data at the same
+time.
 
 ```ruby
 sandbox = Increase::Client.new(
@@ -58,7 +61,7 @@ sandbox = Increase::Client.new(
 Increase::Transactions.with_config(sandbox).list
 # => [{some sandbox transactions here}, {transaction}, {transaction}]
 
-# This request will still use the global configurations (where the API key is a production key)
+# This request will still use the global configurations (using production key)
 Increase::Transactions.list
 # => [{some production transactions here}, {transaction}, {transaction}]
 ```
@@ -70,12 +73,14 @@ Increase::Transactions.with_config(api_key: 'time_is_money', base_url: :sandbox)
 # => [{some sandbox transactions here}, {transaction}, {transaction}]
 ```
 
-See the [Configuration](#configuration) section for more information on the available configurations.
+See the [Configuration](#configuration) section for more information on the
+available configurations.
 
 ### Pagination
 
-When listing resources (e.g. transactions), **Increase** limits the number of results per page to 100. Luckily, the
-client will automatically paginate through all the results for you!
+When listing resources (e.g. transactions), **Increase** limits the number of
+results per page to 100. Luckily, the client will automatically paginate through
+all the results for you!
 
 ```ruby
 Increase::Transactions.list(limit: :all) do |transactions|
@@ -92,26 +97,28 @@ Watch out for the rate limit!
 
 ### Error Handling
 
-Whenever you make an oopsies, the client will raise an error! Errors originating from the API will be a subclass
-of `Increase::ApiError`.
+Whenever you make an oopsies, the client will raise an error! Errors originating
+from the API will be a subclass of `Increase::ApiError`.
 
 ```ruby
 
 begin
   Increase::Transactions.retrieve('i_dont_exist')
 rescue Increase::ApiError => e
-  puts e.message # "[404: object_not_found_error] Could not find the specified object. No resource of type ..."
+  puts e.message # "[404: object_not_found_error] Could not find the ..."
   puts e.title # "Could not find the specified object."
-  puts e.detail # "No resource of type transaction was found with ID transaction_1234abcd."
+  puts e.detail # "No resource of type transaction was found with ID ..."
   puts e.status # 404
 
-  puts e.response # This contains the full response from the API, including headers! (its a Faraday::Response object)
+  puts e.response # This contains the full response, including headers!
+  # => #<Faraday::Response:0x000000010b1fe2b0 ...>
 
-  puts e.class # Increase::ObjectNotFoundError (it's a subclass of Increase::ApiError!)
+  puts e.class # Increase::ObjectNotFoundError (subclass of Increase::ApiError)
 end
 ```
 
-To disable this behavior, set `Increase.raise_api_errors = false`. Errors will then be returned as a normal response.
+To disable this behavior, set `Increase.raise_api_errors = false`. Errors will
+then be returned as a normal response.
 
 ```ruby
 Increase.raise_api_errors = false # Default: true
@@ -147,7 +154,8 @@ Increase.configure do |config|
 end
 ```
 
-If you are using Rails, the recommended way is to set your configurations as a block in an initializer.
+If you are using Rails, the recommended way is to set your configurations as a
+block in an initializer.
 
 ```ruby
 # config/initializers/increase.rb
@@ -160,8 +168,9 @@ end
 
 ### Webhooks
 
-**Increase**'s webhooks include a `Increase-Webhook-Signature` header for securing your webhook endpoint. Although not
-required, it's strongly recommended that you verify the signature to ensure the request is coming from **Increase**.
+**Increase**'s webhooks include a `Increase-Webhook-Signature` header for
+securing your webhook endpoint. Although not required, it's strongly recommended
+that you verify the signature to ensure the request is coming from **Increase**.
 
 Here is an example for Rails.
 
@@ -193,8 +202,10 @@ end
 
 ### Idempotency
 
-**Increase** supports [idempotent requests](https://increase.com/documentation/api#idempotency) to allow for safely
-retrying requests without accidentally performing the same operation twice.
+**Increase**
+supports [idempotent requests](https://increase.com/documentation/api#idempotency)
+to allow for safely retrying requests without accidentally performing the same
+operation twice.
 
 ```ruby
 card = Increase::Cards.create(
@@ -214,31 +225,37 @@ idempotent_replayed = card.response.headers['Idempotent-Replayed']
 # => nil
 ```
 
-Reusing the key in subsequent requests will return the same response code and body as the original request along with an
-additional HTTP header (`Idempotent-Replayed: true`). This applies to both success and error responses. In situations
-where your request results in a validation error, you'll need to update your request and retry with a new idempotency
-key.
+Reusing the key in subsequent requests will return the same response code and
+body as the original request along with an additional HTTP
+header (`Idempotent-Replayed: true`). This applies to both success and error
+responses. In situations where your request results in a validation error,
+you'll need to update your request and retry with a new idempotency key.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can
-also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then,
+run `rake spec` to run the tests. You can also run `bin/console` for an
+interactive prompt that will allow you to experiment.
 
-You can also run `INCREASE_API_KEY=my_key_here INCREASE_BASE_URL=https://sandbox.increase.com bin/console` to run the
-console with your Increase sandbox API key pre-filled.
+You can also
+run `INCREASE_API_KEY=my_key_here INCREASE_BASE_URL=https://sandbox.increase.com bin/console`
+to run the console with your Increase sandbox API key pre-filled.
 
 To install this gem onto your local machine, run `bundle exec rake install`.
 
-To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will
-create a git tag for the version, push git commits and the created tag, and push the `.gem` file
+To release a new version, update the version number in `version.rb`, and then
+run `bundle exec rake release`, which will create a git tag for the version,
+push git commits and the created tag, and push the `.gem` file
 to [rubygems.org](https://rubygems.org).
 
 Alternatively, use [`gem-release`](https://github.com/svenfuchs/gem-release) and
-run `gem bump --version patch|minor|major`. Then release the gem by running `bundle exec rake release`.
+run `gem bump --version patch|minor|major`. Then release the gem by
+running `bundle exec rake release`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/garyhtou/increase.
+Bug reports and pull requests are welcome on GitHub
+at https://github.com/garyhtou/increase.
 
 ## License
 
@@ -247,5 +264,5 @@ the [MIT License](https://github.com/garyhtou/increase-ruby/blob/main/LICENSE.tx
 
 ---
 
-Please note that this is not an official library written by **Increase**. Its written and maintained
-by [Gary Tou](https://garytou.com/) who just uses Increase at work!
+Please note that this is not an official library written by **Increase**. This
+gem was created and maintained by [Gary Tou](https://garytou.com/).
