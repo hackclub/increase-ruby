@@ -82,4 +82,18 @@ module Increase
     "private_feature_error" => PrivateFeatureError,
     "rate_limited_error" => RateLimitedError
   }
+
+  # WebhookSignatureVerificationError is raised when a received webhook's
+  # signature is invalid.
+  class WebhookSignatureVerificationError < Error
+    attr_reader :signature_header
+    attr_reader :payload
+
+    def initialize(message = "Increase webhook signature verification failed", signature_header: nil, payload: nil)
+      @signature_header = signature_header
+      @payload = payload
+
+      super(message)
+    end
+  end
 end

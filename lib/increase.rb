@@ -5,7 +5,7 @@ require "increase/client"
 require "increase/configuration"
 require "increase/errors"
 require "increase/resources"
-require "increase/webhooks"
+require "increase/webhook/signature"
 
 module Increase
   PRODUCTION_URL = "https://api.increase.com"
