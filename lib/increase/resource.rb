@@ -38,6 +38,9 @@ module Increase
       raise Error, "Invalid `to`. Max of 2 elements allowed" if to.size > 2
       raise Error, "Only one `to` allowed when not `with` an `id`" if to.size > 1 && !with.include?(:id)
 
+      request_method = :request
+      request_method = :paginated_request if with.include?(:pagination)
+
       method =
         if with.include?(:id)
           # Method signature with a required `id` param
@@ -53,11 +56,7 @@ module Increase
                 "/#{id}"
               end
 
-            if with.include?(:pagination)
-              paginated_request(http_method, url, params, headers, &block)
-            else
-              request(http_method, url, params, headers, &block)
-            end
+            send(request_method, http_method, url, params, headers, &block)
           end
         else
           # Method signature without a required `id` param
@@ -65,11 +64,7 @@ module Increase
             url = self.class.resource_url
             url += "/#{to[0]}" if to.size == 1
 
-            if with.include?(:pagination)
-              paginated_request(http_method, url, params, headers, &block)
-            else
-              request(http_method, url, params, headers, &block)
-            end
+            send(request_method, http_method, url, params, headers, &block)
           end
         end
 
