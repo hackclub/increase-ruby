@@ -27,7 +27,8 @@ module Increase
       Faraday.new(
         url: @configuration.base_url,
         headers: {
-          Authorization: "Bearer #{@configuration.api_key}"
+          Authorization: "Bearer #{@configuration.api_key}",
+          "User-Agent": "Increase Ruby Gem v#{Increase::VERSION} (https://github.com/garyhtou/increase-ruby)"
         }
       ) do |f|
         f.request :json
