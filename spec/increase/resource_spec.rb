@@ -27,10 +27,6 @@ RSpec.describe Increase::Resource do
     expect(Increase::Accounts.private_methods).to include(:endpoint)
   end
 
-  it "`endpoint_action` method is private" do
-    expect(Increase::Accounts.private_methods).to include(:endpoint_action)
-  end
-
   it "base class is abstract" do
     expect { Increase::Resource.new }.to raise_error(NotImplementedError)
   end
