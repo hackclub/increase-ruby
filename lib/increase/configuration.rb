@@ -22,7 +22,7 @@ module Increase
       if config.is_a?(Hash)
         config.each do |key, value|
           unless respond_to?("#{key}=")
-            raise Error, "Invalid configuration key: #{key}"
+            raise ArgumentError, "Invalid configuration: #{key}"
           end
           public_send("#{key}=", value)
         end
