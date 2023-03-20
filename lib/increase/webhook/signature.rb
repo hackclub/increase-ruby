@@ -15,7 +15,6 @@ module Increase
         end
 
         # Parse header
-        # TODO: Handle multiple signatures
         sig_values = signature_header.split(",").map { |pair| pair.split("=") }.to_h
 
         # Extract values
