@@ -91,7 +91,7 @@ of `Increase::ApiError`.
 ```ruby
 
 begin
-  Increase::Transactions.retrieve('transaction_1234abcd')
+  Increase::Transactions.retrieve('i_dont_exist')
 rescue Increase::ApiError => e
   puts e.message # "[404: object_not_found_error] Could not find the specified object. No resource of type ..."
   puts e.title # "Could not find the specified object."
@@ -109,7 +109,7 @@ To disable this behavior, set `Increase.raise_api_errors = false`. Errors will t
 ```ruby
 Increase.raise_api_errors = false # Default: true
 
-Increase::Transactions.retrieve('transaction_1234abcd')
+Increase::Transactions.retrieve('i_dont_exist')
 # => {"status"=>404, "type"=>"object_not_found_error", ... }
 ```
 
@@ -177,6 +177,7 @@ class IncreaseController < ApplicationController
     # It's a valid webhook! Do something with it...
 
     render json: {success: true}
+
   rescue Increase::WebhookSignatureVerificationError => e
     render json: {error: 'Webhook signature verification failed'}, status: :bad_request
   end
