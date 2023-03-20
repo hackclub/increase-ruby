@@ -4,7 +4,7 @@ require "increase/resource"
 
 module Increase
   class Events < Resource
-    endpoint :list
-    endpoint :retrieve
+    list
+    retrieve
   end
 end

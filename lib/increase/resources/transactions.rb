@@ -4,7 +4,7 @@ require "increase/resource"
 
 module Increase
   class Transactions < Resource
-    endpoint :list
-    endpoint :retrieve
+    list
+    retrieve
   end
 end

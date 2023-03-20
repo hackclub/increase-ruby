@@ -4,10 +4,10 @@ require "increase/resource"
 
 module Increase
   class Cards < Resource
-    endpoint :create
-    endpoint :list
-    endpoint :details, as: :action, with: :get
-    endpoint :update
-    endpoint :retrieve
+    create
+    list
+    endpoint :details, :get, with: :id
+    update
+    retrieve
   end
 end

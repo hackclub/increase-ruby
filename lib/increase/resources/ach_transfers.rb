@@ -4,10 +4,10 @@ require "increase/resource"
 
 module Increase
   class AchTransfers < Resource
-    endpoint :create
-    endpoint :list
-    endpoint :retrieve
-    endpoint :approve, as: :action, with: :post
-    endpoint :cancel, as: :action, with: :post
+    create
+    list
+    retrieve
+    endpoint :approve, :post, with: :id
+    endpoint :cancel, :post, with: :id
   end
 end

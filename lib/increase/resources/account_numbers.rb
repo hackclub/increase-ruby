@@ -4,9 +4,9 @@ require "increase/resource"
 
 module Increase
   class AccountNumbers < Resource
-    endpoint :create
-    endpoint :list
-    endpoint :update
-    endpoint :retrieve
+    create
+    list
+    update
+    retrieve
   end
 end
