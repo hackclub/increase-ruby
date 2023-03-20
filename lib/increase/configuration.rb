@@ -8,11 +8,8 @@ module Increase
     # TODO: support Faraday config
 
     def initialize(config = nil)
-      if config.nil?
-        reset
-      else
-        configure(config)
-      end
+      reset
+      configure(config) if config
     end
 
     def reset
