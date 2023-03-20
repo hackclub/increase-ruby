@@ -140,6 +140,38 @@ end
 Increase.configure(api_key: 'just_my_two_cents')
 ```
 
+### Webhooks
+
+**Increase**'s webhooks include a `Increase-Webhook-Signature` header for securing your webhook endpoint. Although not
+required, it's strongly recommended that you verify the signature to ensure the request is coming from **Increase**.
+
+Here is an example for Rails.
+
+```ruby
+
+class IncreaseController < ApplicationController
+  protect_from_forgery except: :webhook # Ignore CSRF checks
+
+  def webhook
+    payload = request.body.read
+    sig_header = request.headers['Increase-Webhook-Signature']
+    secret = Rails.application.credentials.dig(:increase, :webhook_secret)
+
+    Increase::Webhook::Signature.verify?(
+      payload: payload,
+      signature_header: sig_header,
+      secret: secret
+    )
+
+    # It's a valid webhook! Do something with it...
+
+    render json: {success: true}
+  rescue Increase::WebhookSignatureVerificationError => e
+    render json: {error: 'Webhook signature verification failed'}, status: :bad_request
+  end
+end
+```
+
 ### Idempotency
 
 **Increase** supports [idempotent requests](https://increase.com/documentation/api#idempotency) to allow for safely
