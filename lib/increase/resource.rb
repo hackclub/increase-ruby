@@ -209,7 +209,7 @@ module Increase
         # For example, someone passes a block to `Account.create`
         if data.nil?
           # In this case, we'll both yield and return the response
-          yield res
+          yield res if block
           return res
         end
 
