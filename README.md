@@ -129,15 +129,26 @@ Increase.api_key = 'terabytes_of_cash' # Default: nil (you'll need one tho!)
 Increase.base_url = :production # Default: :production
 Increase.raise_api_errors = true # Default: true
 
-# Or, you can use a block
-Increase.configure do |config|
-  config.api_key = 'digital_dough'
-  config.base_url = :sandbox
-  config.raise_api_errors = false
-end
-
 # Or, you can pass in a hash
 Increase.configure(api_key: 'just_my_two_cents')
+
+# Or, you can use a block!
+Increase.configure do |config|
+  config.api_key = 'digital_dough'
+  config.base_url = :sandbox # Default: :production
+  config.raise_api_errors = false # Default: true
+end
+```
+
+If you are using Rails, the recommended way is to set your configurations as a block in an initializer.
+
+```ruby
+# config/initializers/increase.rb
+
+Increase.configure do |config|
+  config.api_key = 'money_cant_buy_happiness'
+  config.base_url = :production
+end
 ```
 
 ### Webhooks
