@@ -5,12 +5,13 @@ Bare-Metal Banking APIs!
 
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Per-request Configuration](#per-request-configuration)
-  - [Pagination](#pagination)
-  - [Error Handling](#error-handling)
-  - [Configuration](#configuration)
-  - [Webhooks](#webhooks)
-  - [Idempotency](#idempotency)
+    - [Per-request Configuration](#per-request-configuration)
+    - [Pagination](#pagination)
+    - [Error Handling](#error-handling)
+    - [Configuration](#configuration)
+    - [File Uploads](#file-uploads)
+    - [Webhooks](#webhooks)
+    - [Idempotency](#idempotency)
 - [Development](#development)
 
 ## Installation
@@ -200,6 +201,24 @@ Increase.configure do |config|
   config.raise_api_errors = true # Default: true
 end
 ```
+
+### File Uploads
+
+```ruby
+# Creating a file of an image of a government-issued ID
+file_to_upload = Faraday::Multipart::FilePart.new(
+  '/path/to/file.jpg', # File path
+  'image/jpeg' # File name
+)
+
+Increase::Files.create(
+  purpose: 'identity_document',
+  file: file_to_upload
+) 
+```
+
+See [`faraday-multipart`](https://github.com/lostisland/faraday-multipart)'s
+documentation for more file upload options.
 
 ### Webhooks
 

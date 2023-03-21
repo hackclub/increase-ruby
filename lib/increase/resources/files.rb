@@ -8,7 +8,7 @@ module Increase
     API_NAME = "files"
 
     # Create a File
-    create
+    endpoint :create, :post, with: :file_upload
     # List Files
     list
     # Retrieve a File

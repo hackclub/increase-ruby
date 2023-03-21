@@ -42,12 +42,20 @@ module Increase
             segments = path.map { |segment| is_id.call(segment) ? id : segment }
             url = ([self.class.resource_url] + segments).join("/")
 
+            if with.include?(:file_upload)
+              headers = {"Content-Type" => "multipart/form-data"}.merge(headers || {})
+            end
+
             send(request_method, http_method, url, params, headers, &block)
           end
         else
           # Method signature without a required `id` param
           ->(params = nil, headers = nil, &block) do
             url = ([self.class.resource_url] + path).join("/")
+
+            if with.include?(:file_upload)
+              headers = {"Content-Type" => "multipart/form-data"}.merge(headers || {})
+            end
 
             send(request_method, http_method, url, params, headers, &block)
           end
@@ -91,6 +99,8 @@ module Increase
     private
 
     def request(method, path, params = nil, headers = nil, &block)
+      headers ||= {}
+
       if block
         # Assume the caller wants to automatically paginate
         return paginated_request(method, path, params, headers, &block)
@@ -98,6 +108,19 @@ module Increase
 
       if method == :post
         headers = {"Content-Type" => "application/json"}.merge!(headers || {})
+      end
+
+      # Hack to check for correct file upload params
+      if headers["Content-Type"] == "multipart/form-data"
+        attr = :file # TODO: Make this configurable
+        if params.nil? || params[attr].nil?
+          # No file to upload
+        elsif params[attr].is_a?(Faraday::Multipart::FilePart) || params[attr].is_a?(Faraday::Multipart::ParamPart)
+          # All is good!
+        else
+          # Soft fail
+          warn "File upload requires a `#{attr}` param with a Faraday::Multipart::FilePart or Faraday::MultiPart::ParamPart object. See docs."
+        end
       end
 
       response = @client.connection.send(method, path, params, headers)

@@ -4,6 +4,7 @@ require "increase/configuration"
 
 require "faraday"
 require "faraday/follow_redirects"
+require "faraday/multipart"
 
 # Custom Faraday Middleware to handle raising errors
 require "faraday/raise_increase_api_error"
@@ -32,6 +33,7 @@ module Increase
         }
       ) do |f|
         f.request :json
+        f.request :multipart
 
         if @configuration.raise_api_errors
           # This custom middleware for raising Increase API errors must be
