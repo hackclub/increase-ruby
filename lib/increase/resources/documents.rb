@@ -3,12 +3,12 @@
 require "increase/resource"
 
 module Increase
-  class Events < Resource
-    RESOURCE_TYPE = "events"
+  class Documents < Resource
+    RESOURCE_TYPE = "documents"
 
-    # List Events
+    # List Documents
     list
-    # Retrieve an Event
+    # Retrieve a Document
     retrieve
   end
 end

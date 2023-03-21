@@ -4,10 +4,17 @@ require "increase/resource"
 
 module Increase
   class Cards < Resource
+    RESOURCE_TYPE = "cards"
+
+    # Create a Card
     create
+    # List Cards
     list
-    endpoint :details, :get, with: :id
+    # Retrieve sensitive details for a Card
+    endpoint :details, :get, path: [:card_id, "details"]
+    # Update a Card
     update
+    # Retrieve a Card
     retrieve
   end
 end
