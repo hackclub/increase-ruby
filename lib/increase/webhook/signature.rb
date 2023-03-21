@@ -8,7 +8,15 @@ module Increase
       DEFAULT_TIME_TOLERANCE = 300 # 300 seconds (5 minutes)
       DEFAULT_SCHEME = "v1"
 
-      def self.verify?(payload:, signature_header:, secret:, scheme: DEFAULT_SCHEME, time_tolerance: DEFAULT_TIME_TOLERANCE)
+      # Verifies the signature of a webhook payload (without raising an error)
+      def self.verify?(**args)
+        verify(**args)
+      rescue WebhookSignatureVerificationError
+        false
+      end
+
+      # Raises a WebhookSignatureVerificationError if the signature is invalid
+      def self.verify(payload:, signature_header:, secret:, scheme: DEFAULT_SCHEME, time_tolerance: DEFAULT_TIME_TOLERANCE)
         # Helper for raising errors with additional metadata
         sig_error = ->(msg) do
           WebhookSignatureVerificationError.new(msg, signature_header: signature_header, payload: payload)

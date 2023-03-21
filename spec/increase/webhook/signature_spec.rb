@@ -31,12 +31,22 @@ RSpec.describe Increase::Webhook::Signature do
     context "with a timestamp outside of the tolerance" do
       it "raises an error" do
         expect {
-          Increase::Webhook::Signature.verify?(
+          Increase::Webhook::Signature.verify(
             payload: @payload,
             signature_header: @signature_header,
             secret: @secret
           )
         }.to raise_error(Increase::WebhookSignatureVerificationError)
+      end
+
+      it "returns false" do
+        expect(
+          Increase::Webhook::Signature.verify?(
+            payload: @payload,
+            signature_header: @signature_header,
+            secret: @secret
+          )
+        ).to eq(false)
       end
     end
   end

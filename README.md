@@ -204,7 +204,7 @@ class IncreaseController < ApplicationController
     sig_header = request.headers['Increase-Webhook-Signature']
     secret = Rails.application.credentials.dig(:increase, :webhook_secret)
 
-    Increase::Webhook::Signature.verify?(
+    Increase::Webhook::Signature.verify(
       payload: payload,
       signature_header: sig_header,
       secret: secret
