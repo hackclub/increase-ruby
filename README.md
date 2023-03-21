@@ -3,6 +3,16 @@
 A Ruby API client for [Increase](https://increase.com/), a platform for
 Bare-Metal Banking APIs!
 
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Per-request Configuration](#per-request-configuration)
+  - [Pagination](#pagination)
+  - [Error Handling](#error-handling)
+  - [Configuration](#configuration)
+  - [Webhooks](#webhooks)
+  - [Idempotency](#idempotency)
+- [Development](#development)
+
 ## Installation
 
 Install the gem and add to the application's Gemfile by executing:
