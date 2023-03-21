@@ -21,14 +21,6 @@ module Increase
       "/#{self::RESOURCE_TYPE}"
     end
 
-    def self.resource_name
-      if self == Resource
-        raise NotImplementedError, "Resource is an abstract class. You should perform actions on its subclasses (Accounts, Transactions, Card, etc.)"
-      end
-
-      name.split("::").last.gsub(/[A-Z]/, ' \0').strip
-    end
-
     def self.endpoint(name, http_method, path: nil, with: nil)
       path = [path].flatten.compact
       with = [with].flatten.compact

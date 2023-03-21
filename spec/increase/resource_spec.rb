@@ -5,10 +5,6 @@ RSpec.describe Increase::Resource do
     expect(Increase::Accounts.resource_url).to eq("/accounts")
   end
 
-  it "has a resource_name" do
-    expect(Increase::Accounts.resource_name).to eq("Accounts")
-  end
-
   context "when using `with_config`" do
     it "can can be instantiated" do
       @client = Increase::Client.new

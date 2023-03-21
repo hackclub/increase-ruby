@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class <%= resource %> < Resource
+    NAME = <%= resource_name.inspect %>
     RESOURCE_TYPE = <%= resource_type.inspect %>
 
     <%- operations.each do |op| -%>
