@@ -5,7 +5,7 @@ require "increase/resource"
 module Increase
   class AccountTransfers < Resource
     NAME = "Account Transfers"
-    RESOURCE_TYPE = "account_transfers"
+    API_NAME = "account_transfers"
 
     # Create an Account Transfer
     create

@@ -5,7 +5,7 @@ require "increase/resource"
 module Increase
   class Documents < Resource
     NAME = "Documents"
-    RESOURCE_TYPE = "documents"
+    API_NAME = "documents"
 
     # List Documents
     list

@@ -5,7 +5,7 @@ require "increase/resource"
 module Increase
   class AchTransfers < Resource
     NAME = "ACH Transfers"
-    RESOURCE_TYPE = "ach_transfers"
+    API_NAME = "ach_transfers"
 
     # Create an ACH Transfer
     create

@@ -5,7 +5,7 @@ require "increase/resource"
 module Increase
   class AchPrenotifications < Resource
     NAME = "ACH Prenotifications"
-    RESOURCE_TYPE = "ach_prenotifications"
+    API_NAME = "ach_prenotifications"
 
     # Create an ACH Prenotification
     create

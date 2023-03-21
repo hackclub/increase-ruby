@@ -5,7 +5,7 @@ require "increase/resource"
 module Increase
   class EventSubscriptions < Resource
     NAME = "Event Subscriptions"
-    RESOURCE_TYPE = "event_subscriptions"
+    API_NAME = "event_subscriptions"
 
     # Create an Event Subscription
     create

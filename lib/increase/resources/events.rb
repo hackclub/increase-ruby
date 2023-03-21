@@ -5,7 +5,7 @@ require "increase/resource"
 module Increase
   class Events < Resource
     NAME = "Events"
-    RESOURCE_TYPE = "events"
+    API_NAME = "events"
 
     # List Events
     list

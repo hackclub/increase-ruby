@@ -5,7 +5,7 @@ require "increase/resource"
 module Increase
   class CheckDeposits < Resource
     NAME = "Check Deposits"
-    RESOURCE_TYPE = "check_deposits"
+    API_NAME = "check_deposits"
 
     # Create a Check Deposit
     create

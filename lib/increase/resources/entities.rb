@@ -5,7 +5,7 @@ require "increase/resource"
 module Increase
   class Entities < Resource
     NAME = "Entities"
-    RESOURCE_TYPE = "entities"
+    API_NAME = "entities"
 
     # Create an Entity
     create

@@ -5,7 +5,7 @@ require "increase/resource"
 module Increase
   class WireTransfers < Resource
     NAME = "Wire Transfers"
-    RESOURCE_TYPE = "wire_transfers"
+    API_NAME = "wire_transfers"
 
     # Create a Wire Transfer
     create
