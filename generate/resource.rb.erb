@@ -3,9 +3,9 @@
 require "increase/resource"
 
 module Increase
-  class <%= resource %> < Resource
-    NAME = <%= resource_name.inspect %>
-    RESOURCE_TYPE = <%= resource_type.inspect %>
+  class <%= class_name %> < Resource
+    NAME = <%= name.inspect %>
+    API_NAME = <%= api_name.inspect %>
 
     <%- operations.each do |op| -%>
     # <%= op[:details]['summary'] %>

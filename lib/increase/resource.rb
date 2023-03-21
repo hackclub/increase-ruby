@@ -18,7 +18,7 @@ module Increase
     end
 
     def self.resource_url
-      "/#{self::RESOURCE_TYPE}"
+      "/#{self::API_NAME}"
     end
 
     def self.endpoint(name, http_method, path: nil, with: nil)

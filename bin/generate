@@ -129,9 +129,9 @@ resources.each do |name, operations|
 
   # Render template
   namespace = OpenStruct.new(
-    resource: class_name,
-    resource_name: name,
-    resource_type: resource_type,
+    class_name: class_name,
+    name: name,
+    api_name: resource_type,
     operations: ops
   )
   contents = render.result(namespace.instance_eval { binding })
