@@ -97,7 +97,7 @@ Watch out for the rate limit!
 
 ### Error Handling
 
-Whenever you make an oopsies, the client will raise an error! Errors originating
+Whenever you make an oopsie, the client will raise an error! Errors originating
 from the API will be a subclass of `Increase::ApiError`.
 
 ```ruby
@@ -161,8 +161,25 @@ block in an initializer.
 # config/initializers/increase.rb
 
 Increase.configure do |config|
-  config.api_key = 'money_cant_buy_happiness'
-  config.base_url = :production
+  # Your Increase API Key!
+  # Grab it from https://dashboard.increase.com/developers/api_keys
+  config.api_key = Rails.application.credentials.dig(:increase, :api_key)
+
+  # The base URL for Increase's API.
+  # You can use
+  # - :production (https://api.increase.com)
+  # - :sandbox (https://sandbox.increase.com)
+  # - or set an actual URL
+  config.base_url = Rails.env.production? ? :production : :sandbox
+
+  # Whether to raise an error when the API returns a non-2XX status.
+  # If disabled (false), the client will return the error response as a normal,
+  # instead of raising an error.
+  # 
+  # Learn more about...
+  # - Increase's errors: https://increase.com/documentation/api#errors
+  # - Error classes: https://github.com/garyhtou/increase-ruby/blob/main/lib/increase/errors.rb
+  config.raise_api_errors = true # Default: true
 end
 ```
 
@@ -264,5 +281,5 @@ the [MIT License](https://github.com/garyhtou/increase-ruby/blob/main/LICENSE.tx
 
 ---
 
-Please note that this is not an official library written by **Increase**. This
-gem was created and maintained by [Gary Tou](https://garytou.com/).
+Please note that this is not an official library by **Increase**. This gem was
+created and maintained by [Gary Tou](https://garytou.com/).
