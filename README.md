@@ -90,7 +90,10 @@ end
 
 # Or, if you'd like a gargantuan array of all the transactions
 Increase::Transactions.list(limit: :all)
-Increase::Transactions.list(limit: 2_000)
+Increase::Transactions.list(
+  limit: 2_000,
+  'created_at.after': '2022-01-15T06:34:23Z'
+)
 ```
 
 Watch out for the rate limit!
