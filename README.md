@@ -251,8 +251,15 @@ card = Increase::Cards.create(
 )
 # => {"id"=>"card_1234abcd", "type"=>"card", ... }
 
-idempotent_replayed = card.response.headers['Idempotent-Replayed']
+card.idempotent_replayed
 # => nil
+
+# Repeat the exact same request
+card = Increase::Cards.create(...)
+# => {"id"=>"card_1234abcd", "type"=>"card", ... }
+
+card.idempotent_replayed
+# => "true"
 ```
 
 Reusing the key in subsequent requests will return the same response code and
