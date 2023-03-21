@@ -1,0 +1,145 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# OpenAPI client generators for Ruby seem to be a bit of a mess. I'm
+# essentially writing my own crude generator here. It's not perfect, but it
+# gets the job done :)
+
+require 'bundler/setup'
+require 'irb'
+
+require 'json'
+require 'erb'
+require 'ostruct'
+require 'pry'
+
+spec = JSON.parse(File.read('openapi.json'))
+
+# Parse OpenAPI spec
+resources = Hash.new { |h, k| h[k] = [] } # Default value of new keys is []
+spec['paths'].each do |path, methods|
+  methods.each do |method, details|
+    name = details['x-tag'] # Resource name
+
+    endpoint = {
+      http_method: method.to_sym,
+      path: path.split('/').reject(&:empty?),
+      operation: details['operationId'].split('_').first.downcase,
+
+      # Extra info
+      details: details,
+    }
+
+    # Convert path params to symbols
+    path_params = details['parameters'].select { |p| p['in'] == 'path' }
+    endpoint[:path].map! do |p|
+      # Find path param for this segment
+      param = path_params.find { |param| "{#{param['name']}}" == p }
+      param ? param['name'].to_sym : p
+    end
+
+    # Handle case for "/groups/current".
+    # Changes operation from :retrieve to :current
+    if endpoint[:path].size > 1 && endpoint[:path].last.is_a?(String)
+      endpoint[:operation] = endpoint[:path].last.to_sym
+    end
+
+    # Add endpoint to resource
+    resources[name] << endpoint
+  end
+end
+
+# Write OpenAPI version to file
+api_version = spec['info']['version']
+File.open('OPENAPI_VERSION', 'w') do |file|
+  file.write("v#{api_version}")
+end
+
+# Clear resources directory
+Dir.glob('lib/increase/resources/*.rb').each do |file|
+  File.delete(file)
+end
+
+# Generate code
+OPERATION_ALIASES = [
+  {
+    name: 'create',
+    operation: 'create',
+    http_method: :post,
+    path_regex: /^\w+$/
+  },
+  {
+    name: 'list',
+    operation: 'list',
+    http_method: :get,
+    path_regex: /^\w+$/
+  },
+  {
+    name: 'update',
+    operation: 'update',
+    http_method: :patch,
+    path_regex: /^\w+\/\w+_id$/
+  },
+  {
+    name: 'retrieve',
+    operation: 'retrieve',
+    http_method: :get,
+    path_regex: /^\w+\/\w+_id$/
+  }
+]
+
+template = File.read('generate/resource.rb.erb')
+render = ERB.new(template, trim_mode: '-')
+
+resources.delete('Simulations') # TODO
+
+resources.each do |name, operations|
+  # Convert name to class name (pascal case with no special characters)
+  class_name = name.split(/[\s\W]/).map(&:capitalize).join
+
+  # Resource type
+  resource_type = operations.first[:path].first
+
+  # Format operations
+  ops = operations.each do |op|
+    # Try to find an alias for this operation
+    op_alias = OPERATION_ALIASES.find do |alias_op|
+      op[:operation] == alias_op[:operation] &&
+        op[:http_method] == alias_op[:http_method] &&
+        alias_op[:path_regex].match(op[:path].join('/'))
+    end
+    op.merge!(alias: op_alias&.dig(:name))
+
+    # Check to make sure path doesn't not contain more than 1 param
+    if op[:path].select { |p| p.is_a?(Symbol) }.size > 1
+      raise StandardError, "Multiple path params for #{name} #{op[:path].inspect}"
+    end
+
+    # Remove resource root path segment
+    op[:path].shift
+    if op[:path].size == 1
+      op[:path] = op[:path].first
+    end
+  end
+
+  # Check operation uniqueness
+  if ops.map { |op| op[:operation] }.uniq.size != ops.size
+    raise StandardError, "Duplicate operations for #{name}"
+  end
+
+  # Render template
+  namespace = OpenStruct.new(resource: class_name, resource_type: resource_type, operations: ops)
+  contents = render.result(namespace.instance_eval { binding })
+
+  # Write to file
+  File.open("lib/increase/resources/#{resource_type}.rb", 'w') do |file|
+    file.write(contents)
+  end
+
+  # Print messages
+  puts "Generated #{class_name}"
+  ops.each do |op|
+    puts "  #{op[:operation]}"
+  end
+  puts
+end

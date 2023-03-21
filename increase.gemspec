@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files = Dir.chdir(__dir__) do
     `git ls-files -z`.split("\x0").reject do |f|
-      (File.expand_path(f) == __FILE__) || f.start_with?(*%w[bin/ test/ spec/ features/ .git .circleci appveyor])
+      (File.expand_path(f) == __FILE__) || f.start_with?(*%w[bin/console test/ spec/ features/ .git .circleci appveyor])
     end
   end
   spec.bindir = "exe"
@@ -36,7 +36,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "standard", "~> 1.3"
   spec.add_development_dependency "webmock", "~> 3.0"
-  spec.add_development_dependency "pry", "~> 0.13"
+  spec.add_development_dependency "pry"
+  spec.add_development_dependency "erb"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html

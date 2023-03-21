@@ -1,0 +1,17 @@
+# frozen_string_literal: true
+
+require "increase/resource"
+
+module Increase
+  class <%= resource %> < Resource
+    RESOURCE_TYPE = <%= resource_type.inspect %>
+
+    <%- operations.each do |op| -%>
+    # <%= op[:details]['summary'] %>
+    <%- if op[:alias] -%>
+    <%= op[:alias] -%>
+    <%- else -%>
+    endpoint <%= op[:operation].inspect %>, <%= op[:http_method].inspect %>, path: <%= op[:path].inspect -%>
+    <%- end -%><%# close if %>
+    <%- end %><%# close loop %>  end
+end

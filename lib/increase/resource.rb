@@ -18,7 +18,7 @@ module Increase
     end
 
     def self.resource_url
-      "/#{resource_name.downcase.tr(" ", "_")}"
+      "/#{self::RESOURCE_TYPE}"
     end
 
     def self.resource_name
@@ -29,40 +29,30 @@ module Increase
       name.split("::").last.gsub(/[A-Z]/, ' \0').strip
     end
 
-    def self.endpoint(name, http_method, to: :same_as_name, with: nil)
-      to = nil if to == :root
-      to = name.to_s if to == :same_as_name
-      to = [to].flatten.compact
+    def self.endpoint(name, http_method, path: nil, with: nil)
+      path = [path].flatten.compact
       with = [with].flatten.compact
 
-      raise Error, "Invalid `to`. Max of 2 elements allowed" if to.size > 2
-      raise Error, "Only one `to` allowed when not `with` an `id`" if to.size > 1 && !with.include?(:id)
+      # TODO: This doesn't support multiple path params
+      is_id = ->(path_segment) { path_segment.is_a?(Symbol) && path_segment.to_s.end_with?("_id") }
+      has_id = path.any? is_id
 
       request_method = :request
       request_method = :paginated_request if with.include?(:pagination)
 
       method =
-        if with.include?(:id)
+        if has_id
           # Method signature with a required `id` param
           ->(id, params = nil, headers = nil, &block) do
-            url = self.class.resource_url
-            url +=
-              if to.size == 2
-                "/#{to[0]}/#{id}/#{to[1]}"
-              elsif to.size == 1
-                # Default to id first
-                "/#{id}/#{to[0]}"
-              else
-                "/#{id}"
-              end
+            segments = path.map { |segment| is_id.call(segment) ? id : segment }
+            url = ([self.class.resource_url] + segments).join("/")
 
             send(request_method, http_method, url, params, headers, &block)
           end
         else
           # Method signature without a required `id` param
           ->(params = nil, headers = nil, &block) do
-            url = self.class.resource_url
-            url += "/#{to[0]}" if to.size == 1
+            url = ([self.class.resource_url] + path).join("/")
 
             send(request_method, http_method, url, params, headers, &block)
           end
@@ -87,19 +77,19 @@ module Increase
       # endpoint which is a `GET` request to the resource's root URL.
 
       def create
-        endpoint :create, :post, to: :root
+        endpoint :create, :post
       end
 
       def list
-        endpoint :list, :get, to: :root, with: :pagination
+        endpoint :list, :get, with: :pagination
       end
 
       def update
-        endpoint :update, :patch, to: :root, with: :id
+        endpoint :update, :patch
       end
 
       def retrieve
-        endpoint :retrieve, :get, to: :root, with: :id
+        endpoint :retrieve, :get
       end
     end
 
