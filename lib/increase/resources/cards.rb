@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class Cards < Resource
+    NAME = "Cards"
     RESOURCE_TYPE = "cards"
 
     # Create a Card

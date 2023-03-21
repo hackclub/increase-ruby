@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class ExternalAccounts < Resource
+    NAME = "External Accounts"
     RESOURCE_TYPE = "external_accounts"
 
     # Create an External Account

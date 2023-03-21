@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class RealTimeDecisions < Resource
+    NAME = "Real-Time Decisions"
     RESOURCE_TYPE = "real_time_decisions"
 
     # Action a Real-Time Decision

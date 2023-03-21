@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class OauthConnections < Resource
+    NAME = "OAuth Connections"
     RESOURCE_TYPE = "oauth_connections"
 
     # List OAuth Connections

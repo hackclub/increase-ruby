@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class Files < Resource
+    NAME = "Files"
     RESOURCE_TYPE = "files"
 
     # Create a File

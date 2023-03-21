@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class Transactions < Resource
+    NAME = "Transactions"
     RESOURCE_TYPE = "transactions"
 
     # List Transactions

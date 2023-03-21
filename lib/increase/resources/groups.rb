@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class Groups < Resource
+    NAME = "Groups"
     RESOURCE_TYPE = "groups"
 
     # Retrieve Group details

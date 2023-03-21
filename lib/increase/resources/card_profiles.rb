@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class CardProfiles < Resource
+    NAME = "Card Profiles"
     RESOURCE_TYPE = "card_profiles"
 
     # Create a Card Profile

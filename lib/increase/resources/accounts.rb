@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class Accounts < Resource
+    NAME = "Accounts"
     RESOURCE_TYPE = "accounts"
 
     # Create an Account

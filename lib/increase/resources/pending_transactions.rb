@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class PendingTransactions < Resource
+    NAME = "Pending Transactions"
     RESOURCE_TYPE = "pending_transactions"
 
     # List Pending Transactions

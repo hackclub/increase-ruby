@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class Limits < Resource
+    NAME = "Limits"
     RESOURCE_TYPE = "limits"
 
     # Create a Limit

@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class CheckTransfers < Resource
+    NAME = "Check Transfers"
     RESOURCE_TYPE = "check_transfers"
 
     # Create a Check Transfer

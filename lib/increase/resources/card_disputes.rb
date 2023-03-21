@@ -4,6 +4,7 @@ require "increase/resource"
 
 module Increase
   class CardDisputes < Resource
+    NAME = "Card Disputes"
     RESOURCE_TYPE = "card_disputes"
 
     # Create a Card Dispute
