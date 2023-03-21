@@ -69,18 +69,18 @@ sandbox = Increase::Client.new(
 
 # This request will use the `sandbox` client and its configurations
 Increase::Transactions.with_config(sandbox).list
-# => [{some sandbox transactions here}, {transaction}, {transaction}]
+# => [{some sandbox transactions here}, {transaction}, {transaction}, ...]
 
 # This request will still use the global configurations (using production key)
 Increase::Transactions.list
-# => [{some production transactions here}, {transaction}, {transaction}]
+# => [{some production transactions here}, {transaction}, {transaction}, ...]
 ```
 
 Alternatively, directly passing as hash to `with_config` works too!
 
 ```ruby
 Increase::Transactions.with_config(api_key: 'time_is_money', base_url: :sandbox).list
-# => [{some sandbox transactions here}, {transaction}, {transaction}]
+# => [{some sandbox transactions here}, {transaction}, {transaction}, ...]
 ```
 
 See the [Configuration](#configuration) section for more information on the
@@ -100,10 +100,15 @@ end
 
 # Or, if you'd like a gargantuan array of all the transactions
 Increase::Transactions.list(limit: :all)
-Increase::Transactions.list(
+
+# You can also use the `next_cursor` to manually paginate through the results
+txns = Increase::Transactions.list(
   limit: 2_000,
   'created_at.after': '2022-01-15T06:34:23Z'
 )
+# => [{transaction}, {transaction}, {transaction}, ...]
+txns.next_cursor
+# => "eyJwb2NpdGlvbiI6eyJvZmlzZXQiOjEwMH0sIm3pbHRlclI6e319"
 ```
 
 Watch out for the rate limit!
