@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Fixes
+
+- Updated `Increase::Webhook::Signature#verify` to
+  raise `WebhookSignatureVerificationError` when arguments are `nil`
+
 ## [0.3.1] - 2023-03-23
 
 ### Enhancements

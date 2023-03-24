@@ -49,5 +49,42 @@ RSpec.describe Increase::Webhook::Signature do
         ).to eq(false)
       end
     end
+
+    context "when nil payload is passed" do
+      it "raises an error" do
+        expect {
+          Increase::Webhook::Signature.verify(
+            payload: nil,
+            signature_header: @signature_header,
+            secret: @secret
+          )
+        }.to raise_error(Increase::WebhookSignatureVerificationError)
+      end
+    end
+
+    context "when nil signature header is passed" do
+      it "raises an error" do
+        expect {
+          Increase::Webhook::Signature.verify(
+            payload: @payload,
+            signature_header: nil,
+            secret: @secret
+          )
+        }.to raise_error(Increase::WebhookSignatureVerificationError)
+      end
+    end
+
+    context "when nil secret is passed" do
+      it "raises an error" do
+        expect {
+          Increase::Webhook::Signature.verify(
+            payload: @payload,
+            signature_header: @signature_header,
+            secret: nil
+          )
+        }.to raise_error(Increase::WebhookSignatureVerificationError)
+      end
+    end
   end
+
 end

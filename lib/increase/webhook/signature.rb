@@ -23,7 +23,7 @@ module Increase
         end
 
         # Parse header
-        sig_values = signature_header.split(",").map { |pair| pair.split("=") }.to_h
+        sig_values = signature_header&.split(",")&.map { |pair| pair.split("=") }&.to_h || {}
 
         # Extract values
         t = sig_values["t"] # Should be a string (ISO-8601 timestamp)
@@ -32,6 +32,8 @@ module Increase
         raise sig_error.call("No signature found with scheme #{scheme} in signature header") if sig.nil?
 
         # Check signature
+        raise sig_error.call("Webhook secret is required") if secret.nil?
+        raise sig_error.call("Payload is required") if payload.nil?
         expected_sig = compute_signature(timestamp: t, payload: payload, secret: secret)
         matches = Util.secure_compare(expected_sig, sig)
         raise sig_error.call("Signature mismatch") unless matches
@@ -56,6 +58,10 @@ module Increase
       end
 
       def self.compute_signature(timestamp:, payload:, secret:)
+        raise ArgumentError, "timestamp is required" if timestamp.nil?
+        raise ArgumentError, "payload is required" if payload.nil?
+        raise ArgumentError, "secret is required" if secret.nil?
+
         signed_payload = timestamp.to_s + "." + payload.to_s
         OpenSSL::HMAC.hexdigest("SHA256", secret, signed_payload)
       end
