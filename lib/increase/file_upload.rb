@@ -33,11 +33,19 @@ module Increase
     end
 
     def file_part
-      Faraday::Multipart::FilePart.new(
-        @file,
-        @content_type,
-        @filename
-      )
+      if Gem::Version.new(Faraday::VERSION) >= Gem::Version.new('2.0')
+        Faraday::Multipart::FilePart.new(
+          @file,
+          @content_type,
+          @filename
+        )
+      else
+        Faraday::FilePart.new(
+          @file,
+          @content_type,
+          @filename
+        )
+      end
     end
 
     private
