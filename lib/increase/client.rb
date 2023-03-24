@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 require "increase/configuration"
+require "increase/middleware/raise_api_error"
 
 require "faraday"
 require "faraday/follow_redirects"
 require "faraday/multipart"
 
-# Custom Faraday Middleware to handle raising errors
-require "faraday/raise_increase_api_error"
 
 module Increase
   class Client
@@ -38,7 +37,7 @@ module Increase
         if @configuration.raise_api_errors
           # This custom middleware for raising Increase API errors must be
           # located before the JSON response middleware.
-          f.use FaradayMiddleware::RaiseIncreaseApiError
+          f.use Increase::Middleware::RaiseApiError
         end
 
         f.response :json
