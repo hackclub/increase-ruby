@@ -1,8 +1,11 @@
 # Changelog
 
-## Unreleased
+## [0.3.1] - 2023-03-23
+
+### Enhancements
 
 - Support Faraday >= 1.0.1 (https://github.com/garyhtou/increase-ruby/pull/8)
+
 
 ## [0.3.0] - 2023-03-23
 
