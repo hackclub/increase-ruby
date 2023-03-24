@@ -5,7 +5,6 @@ require "json"
 
 module Increase
   module Middleware
-
     # JSON response middleware for Faraday 1.0
     # In Faraday 2.0, the JSON middleware is bundled with the Faraday gem itself
     #
@@ -28,15 +27,14 @@ module Increase
       end
 
       def response_type(env)
-        type = env[:response_headers]['Content-Type'].to_s
-        type = type.split(';', 2).first if type.index(';')
+        type = env[:response_headers]["Content-Type"].to_s
+        type = type.split(";", 2).first if type.index(";")
         type
       end
 
       def process_response_type?(type)
         !!type.match(/\bjson$/)
       end
-
     end
   end
 end

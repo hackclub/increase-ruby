@@ -5,7 +5,7 @@ require "increase/middleware/raise_api_error"
 
 require "faraday"
 require "faraday/follow_redirects" # Supports both Faraday 1.0 and 2.0
-if Gem::Version.new(Faraday::VERSION) >= Gem::Version.new('2.0')
+if Gem::Version.new(Faraday::VERSION) >= Gem::Version.new("2.0")
   # In Faraday 2.0, multipart support is no longer included by default
   require "faraday/multipart"
 else
@@ -36,7 +36,7 @@ module Increase
           "User-Agent": "Increase Ruby Gem v#{Increase::VERSION} (https://github.com/garyhtou/increase-ruby)"
         }
       ) do |f|
-        f.request :json if Gem::Version.new(Faraday::VERSION) >= Gem::Version.new('2.0')
+        f.request :json if Gem::Version.new(Faraday::VERSION) >= Gem::Version.new("2.0")
         f.request :multipart
 
         if @configuration.raise_api_errors
