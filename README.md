@@ -19,14 +19,14 @@ Bare-Metal Banking APIs!
 Install the gem and add to the application's Gemfile by executing:
 
 ```sh
-$ bundle add increase -v 0.3.1
+$ bundle add increase -v 0.3.2
 ```
 
 If bundler is not being used to manage dependencies, install the gem by
 executing:
 
 ```sh
-$ gem install increase -v 0.3.1
+$ gem install increase -v 0.3.2
 ```
 
 ## Usage
