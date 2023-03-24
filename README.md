@@ -204,21 +204,43 @@ end
 
 ### File Uploads
 
+It's as simple as passing in a file path!
+
 ```ruby
-# Creating a file of an image of a government-issued ID
-file_to_upload = Faraday::Multipart::FilePart.new(
-  '/path/to/file.jpg', # File path
-  'image/jpeg' # File content type
+Increase::Files.create(
+  purpose: 'identity_document',
+  file: '/path/to/file.jpg'
+) 
+```
+
+Alternatively, you can pass in a `File` object.
+
+```ruby
+file = File.open('/path/to/file.jpg')
+
+Increase::Files.create(
+  purpose: 'identity_document',
+  file: file
+) 
+```
+
+Or, get even fancier and use `Increase::FileUpload` to specify the content type
+and filename.
+
+```ruby
+file = Increase::FileUpload.new(
+  '/path/to/file.jpg',
+  content_type: 'image/jpeg',
+  filename: 'my_file.jpg'
 )
 
 Increase::Files.create(
   purpose: 'identity_document',
-  file: file_to_upload
+  file: file
 ) 
 ```
 
-See [`faraday-multipart`](https://github.com/lostisland/faraday-multipart)'s
-documentation for more file upload options.
+If no content type or filename is provided, the client will try to guess it.
 
 ### Webhooks
 

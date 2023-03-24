@@ -99,6 +99,7 @@ module Increase
     private
 
     def request(method, path, params = nil, headers = nil, &block)
+      params ||= {}
       headers ||= {}
 
       if block
@@ -113,13 +114,12 @@ module Increase
       # Hack to check for correct file upload params
       if headers["Content-Type"] == "multipart/form-data"
         attr = :file # TODO: Make this configurable
-        if params.nil? || params[attr].nil?
-          # No file to upload
-        elsif params[attr].is_a?(Faraday::Multipart::FilePart) || params[attr].is_a?(Faraday::Multipart::ParamPart)
-          # All is good!
-        else
-          # Soft fail
-          warn "File upload requires a `#{attr}` param with a Faraday::Multipart::FilePart or Faraday::MultiPart::ParamPart object. See docs."
+        if params[attr]
+          unless params[attr].is_a?(FileUpload)
+            params[attr] = FileUpload.new(params[attr])
+          end
+
+          params[attr] = params[attr].file_part
         end
       end
 
