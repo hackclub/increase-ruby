@@ -10,6 +10,7 @@ if Gem::Version.new(Faraday::VERSION) >= Gem::Version.new("2.0")
   require "faraday/multipart"
 else
   # In Faraday 1.0, the JSON middleware is not included by default
+  require "increase/middleware/encode_json"
   require "increase/middleware/parse_json"
 end
 
@@ -36,7 +37,7 @@ module Increase
           "User-Agent": "Increase Ruby Gem v#{Increase::VERSION} (https://github.com/garyhtou/increase-ruby)"
         }
       ) do |f|
-        f.request :json if Gem::Version.new(Faraday::VERSION) >= Gem::Version.new("2.0")
+        f.request :json
         f.request :multipart
 
         if @configuration.raise_api_errors
