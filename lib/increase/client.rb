@@ -1,13 +1,18 @@
 # frozen_string_literal: true
 
 require "increase/configuration"
+require "increase/middleware/raise_api_error"
 
 require "faraday"
-require "faraday/follow_redirects"
-require "faraday/multipart"
-
-# Custom Faraday Middleware to handle raising errors
-require "faraday/raise_increase_api_error"
+require "faraday/follow_redirects" # Supports both Faraday 1.0 and 2.0
+if Gem::Version.new(Faraday::VERSION) >= Gem::Version.new("2.0")
+  # In Faraday 2.0, multipart support is no longer included by default
+  require "faraday/multipart"
+else
+  # In Faraday 1.0, the JSON middleware is not included by default
+  require "increase/middleware/encode_json"
+  require "increase/middleware/parse_json"
+end
 
 module Increase
   class Client
@@ -38,7 +43,7 @@ module Increase
         if @configuration.raise_api_errors
           # This custom middleware for raising Increase API errors must be
           # located before the JSON response middleware.
-          f.use FaradayMiddleware::RaiseIncreaseApiError
+          f.use Increase::Middleware::RaiseApiError
         end
 
         f.response :json
