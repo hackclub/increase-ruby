@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "Ruby API client for Increase, a platform for Bare-Metal Banking APIs"
   spec.homepage = "https://github.com/garyhtou/increase-ruby"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.4.0"
+  spec.required_ruby_version = ">= 2.6.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/garyhtou/increase-ruby"
