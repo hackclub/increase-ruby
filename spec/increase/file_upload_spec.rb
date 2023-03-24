@@ -51,7 +51,6 @@ RSpec.describe Increase::FileUpload do
         expect(Increase::FileUpload.new(@filepath).content_type).to eq("text/x-ruby")
       end
     end
-
   end
 
   context "when given an IO" do
@@ -71,5 +70,4 @@ RSpec.describe Increase::FileUpload do
       expect(Increase::FileUpload.new(@blob, content_type: "text/plain").content_type).to eq("text/plain")
     end
   end
-
 end

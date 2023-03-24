@@ -29,7 +29,7 @@ module Increase
       with = [with].flatten.compact
 
       # TODO: This doesn't support multiple path params
-      is_id = ->(path_segment) { path_segment.is_a?(Symbol) && path_segment.to_s.end_with?('id') }
+      is_id = ->(path_segment) { path_segment.is_a?(Symbol) && path_segment.to_s.end_with?("id") }
       has_id = path.any? is_id
 
       request_method = :request

@@ -13,7 +13,7 @@ module Increase
     end
 
     def next_cursor
-      wrapped&.dig('next_cursor')
+      wrapped&.dig("next_cursor")
     end
   end
 end

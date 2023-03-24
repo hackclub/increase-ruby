@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'tempfile'
-require 'marcel'
-require 'faraday'
-require 'pathname'
+require "tempfile"
+require "marcel"
+require "faraday"
+require "pathname"
 
 module Increase
   class FileUpload
@@ -45,6 +45,5 @@ module Increase
     def default_filename
       "file upload #{Time.now}"
     end
-
   end
 end
