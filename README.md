@@ -326,14 +326,15 @@ to run the console with your Increase sandbox API key pre-filled.
 
 To install this gem onto your local machine, run `bundle exec rake install`.
 
-To release a new version, update the version number in `version.rb`, and then
-run `bundle exec rake release`, which will create a git tag for the version,
-push git commits and the created tag, and push the `.gem` file
-to [rubygems.org](https://rubygems.org).
+To release a new version:
 
-Alternatively, use [`gem-release`](https://github.com/svenfuchs/gem-release) and
-run `gem bump --version patch|minor|major`. Then release the gem by
-running `bundle exec rake release`.
+- `gem bump --version patch|minor|major`
+    - Make sure you
+      have [`gem-release`](https://github.com/svenfuchs/gem-release)
+      installed
+- Update the CHANGELOG and README if necessary
+- `bundle exec rake release`
+- Create release on GitHub from newly created tag
 
 ## Contributing
 
