@@ -19,14 +19,14 @@ Bare-Metal Banking APIs!
 Install the gem and add to the application's Gemfile by executing:
 
 ```sh
-$ bundle add increase
+$ bundle add increase -v 0.2.0
 ```
 
 If bundler is not being used to manage dependencies, install the gem by
 executing:
 
 ```sh
-$ gem install increase
+$ gem install increase -v 0.2.0
 ```
 
 ## Usage
@@ -208,7 +208,7 @@ end
 # Creating a file of an image of a government-issued ID
 file_to_upload = Faraday::Multipart::FilePart.new(
   '/path/to/file.jpg', # File path
-  'image/jpeg' # File name
+  'image/jpeg' # File content type
 )
 
 Increase::Files.create(
