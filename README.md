@@ -1,7 +1,11 @@
 # Increase
 
-A Ruby API client for [Increase](https://increase.com/), a platform for
-Bare-Metal Banking APIs!
+_A Ruby API client for [Increase](https://increase.com/), a platform for
+Bare-Metal Banking APIs!_
+
+Interact with Increase's API in a simple and Ruby-like manner.
+
+🏦 Battle-tested at [Hack Club Bank](https://hackclub.com/bank/)
 
 - [Installation](#installation)
 - [Usage](#usage)
