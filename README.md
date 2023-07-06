@@ -348,7 +348,7 @@ at https://github.com/garyhtou/increase.
 ## License
 
 The gem is available as open source under the terms of
-the [MIT License](https://github.com/garyhtou/increase-ruby/blob/main/LICENSE.txt).
+the [MIT License](https://github.com/hackclub/increase-ruby/blob/main/LICENSE.txt).
 
 ---
 
