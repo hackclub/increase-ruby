@@ -5,8 +5,18 @@ Bare-Metal Banking APIs!_
 
 Interact with Increase's API in a simple and Ruby-like manner.
 
-🏦 Battle-tested at [HCB](https://hackclub.com/hcb/)
+> [!TIP]
+> I, [@garyhtou](https://garytou.com), maintained the [`increase`
+> ruby gem](https://rubygems.org/gems/increase) up until June 15th, 2025. At
+> which point, I passed the gem name ownership over to
+> [Increase](https://increase.com/) since they shipped their own Ruby gem!
+> You can find the official gem source code at
+> [Increase/increase-ruby](https://github.com/Increase/increase-ruby).
+>
+> The last release of this unofficial increase gem was
+> [v0.3.3](https://rubygems.org/gems/increase/versions/0.3.3).
 
+🏦 Battle-tested at [HCB](https://hackclub.com/hcb/)
 - [Installation](#installation)
 - [Usage](#usage)
     - [Per-request Configuration](#per-request-configuration)
